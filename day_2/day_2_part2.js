@@ -7,14 +7,14 @@ let lines = file.split('\n');
 lines.pop();
 
 lines.forEach(line => {
-  let split = line.split(': ');
-  let id = parseInt(split[0].split(' ')[1]);
+  const split = line.split(': ');
+  const id = parseInt(split[0].split(' ')[1]);
   line = split[1];
 
   let minRed = 0;
   let minGreen = 0;
   let minBlue = 0;
-  for (let game of line.split('; ')) {
+  for (const game of line.split('; ')) {
     for (const numAndColor of game.split(', ')) {
       const num = numAndColor.split(' ')[0];
       const color = numAndColor.split(' ')[1];
