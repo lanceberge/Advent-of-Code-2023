@@ -30,6 +30,10 @@ public:
     return sum;
   }
 
+  /*
+    Find all of the adjacent numbers of grid[j][i]. Return their product
+    if there are two of them
+  */
   int adjacentNumberProduct(const vector<string> &grid, int i, int j) {
 
     int m = grid[0].size(), n = grid.size();
@@ -93,6 +97,7 @@ public:
     return adjacentNumbers;
   }
 
+  // Proceed both left and right to match the longest int
   int matchLongestNumber(const string &line, int start) {
     int left = start;
     while (left > 0 && isdigit(line[left - 1])) {
@@ -126,7 +131,6 @@ int main() {
   file.close();
 
   long result = Day3().sumAdjacentProducts(grid);
-
   cout << result << endl;
 
   return 0;
