@@ -21,36 +21,32 @@ public:
 
     for (int i = 0; i < grid[0].size(); ++i) {
       for (int j = 0; j < grid.size(); ++j) {
-        if (grid[i][j] == '*') {
+        if (grid[j][i] == '*') {
           sum += adjacentNumberProduct(grid, i, j);
         }
       }
-
-      return sum;
     }
+
+    return sum;
   }
 
   int adjacentNumberProduct(const vector<string> &grid, int i, int j) {
 
-    int m = grid.size(), n = grid[0].size();
-    vector<int> adjacentNumbers = vector<int>();
+    int m = grid[0].size(), n = grid.size();
+    vector<int> adjacentNumbers;
 
     // Check left
-    if (i - 1 > 0) {
-      if (isdigit(grid[j][i - 1])) {
-        adjacentNumbers.push_back(matchLongestNumber(grid[j], i - 1, -1));
-      }
+    if (i > 0 && isdigit(grid[j][i - 1])) {
+      adjacentNumbers.push_back(matchLongestNumber(grid[j], i - 1, -1));
     }
 
     // Check right
-    if (i + 1 < m) {
-      if (isdigit(grid[j][i + 1])) {
-        adjacentNumbers.push_back(matchLongestNumber(grid[j], i + 1, 1));
-      }
+    if (i + 1 < m && isdigit(grid[j][i + 1])) {
+      adjacentNumbers.push_back(matchLongestNumber(grid[j], i + 1, 1));
     }
 
     // Check top
-    if (j - 1 > 0) {
+    if (j > 0) {
       vector<int> adjacentInRow = getAdjacentNumbersInRow(grid[j - 1], i);
       adjacentNumbers.insert(adjacentNumbers.end(), adjacentInRow.begin(),
                              adjacentInRow.end());
@@ -71,19 +67,19 @@ public:
   vector<int> getAdjacentNumbersInRow(const string &line, int i) {
 
     vector<int> adjacentNumbers;
-    // If the top left is a number
-    if (isdigit(i - 1 >= 0 && line[i - 1])) {
-      int longestMatch = matchLongestNumber(line, max(0, i - 1), 1);
-      adjacentNumbers.push_back(longestMatch);
+    // If the left is a number
+    if (i - 1 >= 0 && isdigit(line[i - 1])) {
+      int topLeftMatch = matchLongestNumber(line, i - 1, 1);
+      adjacentNumbers.push_back(topLeftMatch);
 
-      // if the match is less than two digits, the top-right could adjacent
-      if (i + 1 < line.length() && i + 1 < line.length()) {
+      // if the match is less than two digits, the right could adjacent
+      if (i + 1 < line.length() && topLeftMatch < 10) {
         if (isdigit(line[i + 1])) {
           adjacentNumbers.push_back(matchLongestNumber(line, i + 1, 1));
         }
       }
 
-      // if the top left isn't a number, check top and top right
+      // if the left isn't a number, check and right
     } else if (isdigit(line[i])) {
       adjacentNumbers.push_back(matchLongestNumber(line, i, 1));
     } else if (i + 1 < line.length() && isdigit(line[i + 1])) {
@@ -99,6 +95,8 @@ public:
     while (end >= 0 && end < line.length() && isdigit(line[end])) {
       end += direction;
     }
+
+    end -= direction;
 
     int actualStart = (direction == 1) ? start : end;
     int actualEnd = (direction == 1) ? end : start;
