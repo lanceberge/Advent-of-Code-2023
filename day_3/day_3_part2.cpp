@@ -1,6 +1,3 @@
-// line-by-line
-// for each number, add to sum if there's an adjacent symbol
-
 #include <cctype>
 #include <fstream>
 #include <iostream>
@@ -99,18 +96,21 @@ public:
 
   // Proceed both left and right to match the longest int
   int matchLongestNumber(const string &line, int start) {
-    int left = start;
-    while (left > 0 && isdigit(line[left - 1])) {
-      left--;
+    int current_factor = 1;
+    int num = 0;
+
+    for (int l = start; isdigit(line[l]); --l) {
+      num += current_factor * (int(line[l]) - '0');
+
+      current_factor *= 10;
     }
 
-    int right = start;
-    while (right < line.length() - 1 && isdigit(line[right + 1])) {
-      right++;
+    for (int r = start + 1; isdigit(line[r]); ++r) {
+      num *= 10;
+      num += int(line[r]) - '0';
     }
 
-    string numStr = line.substr(left, right - left + 1);
-    return stoi(numStr);
+    return num;
   }
 };
 
