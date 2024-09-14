@@ -37,12 +37,12 @@ public:
 
     // Check left
     if (i > 0 && isdigit(grid[j][i - 1])) {
-      adjacentNumbers.push_back(matchLongestNumber(grid[j], i - 1, -1));
+      adjacentNumbers.push_back(matchLongestNumber(grid[j], i - 1));
     }
 
     // Check right
     if (i + 1 < m && isdigit(grid[j][i + 1])) {
-      adjacentNumbers.push_back(matchLongestNumber(grid[j], i + 1, 1));
+      adjacentNumbers.push_back(matchLongestNumber(grid[j], i + 1));
     }
 
     // Check top
@@ -54,9 +54,13 @@ public:
 
     // Check bottom
     if (j + 1 < n) {
-      vector<int> adjacentInRow = getAdjacentNumbersInRow(grid[j - 1], i);
+      vector<int> adjacentInRow = getAdjacentNumbersInRow(grid[j + 1], i);
       adjacentNumbers.insert(adjacentNumbers.end(), adjacentInRow.begin(),
                              adjacentInRow.end());
+    }
+
+    if (adjacentNumbers.size() == 2) {
+      cout << adjacentNumbers[0] << ", " << adjacentNumbers[1] << "\n";
     }
 
     return adjacentNumbers.size() != 2
@@ -69,38 +73,38 @@ public:
     vector<int> adjacentNumbers;
     // If the left is a number
     if (i - 1 >= 0 && isdigit(line[i - 1])) {
-      int topLeftMatch = matchLongestNumber(line, i - 1, 1);
-      adjacentNumbers.push_back(topLeftMatch);
+      int leftMatch = matchLongestNumber(line, i - 1);
+      adjacentNumbers.push_back(leftMatch);
 
       // if the match is less than two digits, the right could adjacent
-      if (i + 1 < line.length() && topLeftMatch < 10) {
+      if (i + 1 < line.length() && leftMatch < 10) {
         if (isdigit(line[i + 1])) {
-          adjacentNumbers.push_back(matchLongestNumber(line, i + 1, 1));
+          adjacentNumbers.push_back(matchLongestNumber(line, i + 1));
         }
       }
 
       // if the left isn't a number, check and right
     } else if (isdigit(line[i])) {
-      adjacentNumbers.push_back(matchLongestNumber(line, i, 1));
+      adjacentNumbers.push_back(matchLongestNumber(line, i));
     } else if (i + 1 < line.length() && isdigit(line[i + 1])) {
-      adjacentNumbers.push_back(matchLongestNumber(line, i + 1, 1));
+      adjacentNumbers.push_back(matchLongestNumber(line, i + 1));
     }
 
     return adjacentNumbers;
   }
 
-  int matchLongestNumber(const string &line, int start, int direction) {
-    int end = start;
-
-    while (end >= 0 && end < line.length() && isdigit(line[end])) {
-      end += direction;
+  int matchLongestNumber(const string &line, int start) {
+    int left = start;
+    while (left > 0 && isdigit(line[left - 1])) {
+      left--;
     }
 
-    end -= direction;
+    int right = start;
+    while (right < line.length() - 1 && isdigit(line[right + 1])) {
+      right++;
+    }
 
-    int actualStart = (direction == 1) ? start : end;
-    int actualEnd = (direction == 1) ? end : start;
-    string numStr = line.substr(actualStart, actualEnd - actualStart + 1);
+    string numStr = line.substr(left, right - left + 1);
     return stoi(numStr);
   }
 };
