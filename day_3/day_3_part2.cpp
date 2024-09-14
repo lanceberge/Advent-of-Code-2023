@@ -59,10 +59,6 @@ public:
                              adjacentInRow.end());
     }
 
-    if (adjacentNumbers.size() == 2) {
-      cout << adjacentNumbers[0] << ", " << adjacentNumbers[1] << "\n";
-    }
-
     return adjacentNumbers.size() != 2
                ? 0
                : adjacentNumbers[0] * adjacentNumbers[1];
@@ -76,8 +72,12 @@ public:
       int leftMatch = matchLongestNumber(line, i - 1);
       adjacentNumbers.push_back(leftMatch);
 
-      // if the match is less than two digits, the right could adjacent
-      if (i + 1 < line.length() && leftMatch < 10) {
+      // if there is a match to the left, then there isn't a digit, then there
+      // is, then we have two adjacent pairs, ex:
+      // 856.495
+      // ...*...
+
+      if (!isdigit(line[i]) && i + 1 < line.length()) {
         if (isdigit(line[i + 1])) {
           adjacentNumbers.push_back(matchLongestNumber(line, i + 1));
         }
