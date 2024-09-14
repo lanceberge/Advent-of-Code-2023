@@ -51,30 +51,46 @@ public:
 
     // Check top
     if (j - 1 > 0) {
-      // If the top left is a number
-      if (isdigit(grid[j - 1][max(0, i - 1)])) {
-        int longestMatch = matchLongestNumber(grid[j - 1], max(0, i - 1), 1);
-        adjacentNumbers.push_back(longestMatch);
+      vector<int> adjacentInRow = getAdjacentNumbersInRow(grid[j - 1], i);
+      adjacentNumbers.insert(adjacentNumbers.end(), adjacentInRow.begin(),
+                             adjacentInRow.end());
+    }
 
-        // if the match is less than two digits, the top-right could adjacent
-        if (i + 1 < n) {
-          if (isdigit(grid[j - 1][i + 1])) {
-            adjacentNumbers.push_back(
-                matchLongestNumber(grid[j - 1], i + 1, 1));
-          }
-        }
-
-        // if the top left isn't a number, check top and top right
-      } else if (isdigit(grid[j - 1][i])) {
-        adjacentNumbers.push_back(matchLongestNumber(grid[j - 1], i, 1));
-      } else if (isdigit(grid[j - 1][i + 1])) {
-        adjacentNumbers.push_back(matchLongestNumber(grid[j - 1], i, 1));
-      }
+    // Check bottom
+    if (j + 1 < n) {
+      vector<int> adjacentInRow = getAdjacentNumbersInRow(grid[j - 1], i);
+      adjacentNumbers.insert(adjacentNumbers.end(), adjacentInRow.begin(),
+                             adjacentInRow.end());
     }
 
     return adjacentNumbers.size() != 2
                ? 0
                : adjacentNumbers[0] * adjacentNumbers[1];
+  }
+
+  vector<int> getAdjacentNumbersInRow(const string &line, int i) {
+
+    vector<int> adjacentNumbers;
+    // If the top left is a number
+    if (isdigit(i - 1 >= 0 && line[i - 1])) {
+      int longestMatch = matchLongestNumber(line, max(0, i - 1), 1);
+      adjacentNumbers.push_back(longestMatch);
+
+      // if the match is less than two digits, the top-right could adjacent
+      if (i + 1 < line.length() && i + 1 < line.length()) {
+        if (isdigit(line[i + 1])) {
+          adjacentNumbers.push_back(matchLongestNumber(line, i + 1, 1));
+        }
+      }
+
+      // if the top left isn't a number, check top and top right
+    } else if (isdigit(line[i])) {
+      adjacentNumbers.push_back(matchLongestNumber(line, i, 1));
+    } else if (i + 1 < line.length() && isdigit(line[i + 1])) {
+      adjacentNumbers.push_back(matchLongestNumber(line, i + 1, 1));
+    }
+
+    return adjacentNumbers;
   }
 
   int matchLongestNumber(const string &line, int start, int direction) {
