@@ -26,7 +26,7 @@ function getNumFromIdx(line, idx) {
     for (let numString of numStrings[currentChar]) {
       // optimize by starting with the substring 0, 0+min(length, 5) then doing sliding window
       if (line.substring(idx, idx + 5).startsWith(numString[0])) {
-	return numString[1]
+        return numString[1]
       }
     }
   }

@@ -32,7 +32,6 @@ public:
     if there are two of them
   */
   int adjacentNumberProduct(const vector<string> &grid, int i, int j) {
-
     int m = grid[0].size(), n = grid.size();
     vector<int> adjacentNumbers;
 
@@ -66,7 +65,6 @@ public:
   }
 
   vector<int> getAdjacentNumbersInRow(const string &line, int i) {
-
     vector<int> adjacentNumbers;
     // If the left is a number
     if (i - 1 >= 0 && isdigit(line[i - 1])) {
@@ -84,7 +82,7 @@ public:
         }
       }
 
-      // if the left isn't a number, check and right
+      // if the left isn't a number, check middle and right
     } else if (isdigit(line[i])) {
       adjacentNumbers.push_back(matchLongestNumber(line, i));
     } else if (i + 1 < line.length() && isdigit(line[i + 1])) {
@@ -101,7 +99,6 @@ public:
 
     for (int l = start; isdigit(line[l]); --l) {
       num += current_factor * (int(line[l]) - '0');
-
       current_factor *= 10;
     }
 
@@ -116,9 +113,7 @@ public:
 
 int main() {
   vector<string> grid;
-
   string filename = "input.txt";
-
   ifstream file(filename);
 
   string line;
